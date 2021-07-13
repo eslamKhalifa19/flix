@@ -1,2 +1,30 @@
 @import "~antd/dist/antd.css";
 @import "~antd/dist/antd.dark.css";
+
+.center {
+  padding: 2%;
+}
+
+.fit-text {
+  width: fit-content;
+  block-size: fit-content;
+}
+
+.ant-carousel .slick-prev,
+.ant-carousel .slick-next,
+.ant-carousel .slick-prev:hover,
+.ant-carousel .slick-next:hover {
+  font-size: 25px;
+  color: inherit;
+  margin: auto;
+}
+
+.ant-carousel .slick-dots li button {
+  background: #095cb5;
+  opacity: 0.4;
+}
+
+.ant-carousel .slick-dots li.slick-active button {
+  opacity: 1;
+  background: #095cb5;
+}

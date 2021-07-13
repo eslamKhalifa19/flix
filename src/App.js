@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Input, Typography, Layout } from "antd";
+import Slider from "./components/Carousal";
 import "./App.css";
+import { Content } from "antd/lib/layout/layout";
 
 const { Search } = Input;
 const { Title } = Typography;
@@ -38,6 +40,9 @@ function App() {
             onSearch={(value) => alert(value)}
           />
         </Header>
+        <Content>
+          <Slider />
+        </Content>
       </Layout>
     </>
   );
