@@ -6,8 +6,16 @@
 }
 
 .fit-text {
-  width: fit-content;
-  block-size: fit-content;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.ant-card-meta-title {
+  white-space: pre-line;
 }
 
 .ant-carousel .slick-prev,
@@ -27,4 +35,13 @@
 .ant-carousel .slick-dots li.slick-active button {
   opacity: 1;
   background: #095cb5;
+}
+
+.spinner {
+  margin: 20px 0;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
 }
