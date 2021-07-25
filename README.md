@@ -1,5 +1,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/34a05c9e-05ac-4075-a1b8-ff8e8b818c4e/deploy-status)](https://app.netlify.com/sites/flix-kh/deploys)
 
+## https://flix-kh.netlify.app
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
