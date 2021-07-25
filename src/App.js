@@ -10,11 +10,12 @@ const { Title } = Typography;
 const { Header } = Layout;
 
 function App() {
-  const [query, setQuery] = useState("");
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [configuration, setConfiguration] = useState([]);
+  const [query, setQuery] = useState("");
+  const [searchData, setSearchData] = useState([]);
 
   useEffect(() => {
     const fetchConfiguration = async () => {
@@ -52,6 +53,31 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const onSearch = useEffect(() => {
+    if (!query) {
+      return;
+    }
+    const searchData = async () => {
+      setIsError(false);
+      setIsLoading(true);
+      try {
+        const res = await axios(
+          `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&page=1&include_adult=false&query=${query}`
+        );
+        setSearchData(res.data.results);
+      } catch (error) {
+        setIsError(true);
+      }
+      setIsLoading(false);
+    };
+    searchData();
+  }, [query]);
+  console.log(searchData);
+
+  const onChange = (event) => {
+    setQuery(event.target.value);
+  };
+
   return (
     <>
       <Layout>
@@ -69,18 +95,19 @@ function App() {
             FLIX
           </Title>
           <Search
+            onChange={onChange}
             value={query}
+            type="text"
             style={{
               float: "right",
               width: "33%",
               marginTop: "10px",
             }}
-            placeholder={"Search for a movie , tv show"}
-            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search for a movie , tv show"
             allowClear
             enterButton="Search"
             size="large"
-            // onSearch={() => setSearch(query)}
+            onSubmit={onSearch}
           />
         </Header>
         <Content>
@@ -90,6 +117,7 @@ function App() {
             configuration={configuration}
             isError={isError}
             isLoading={isLoading}
+            // searchData={searchData}
           />
         </Content>
       </Layout>
