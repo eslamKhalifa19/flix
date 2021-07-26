@@ -20,6 +20,7 @@ const Slider = ({ isError, isLoading, data, configuration }) => {
         centerMode={true}
         adaptiveHeight
         infinite
+        lazyLoad
       >
         {isError && <div>Something went wrong ...</div>}
         {isLoading ? (
@@ -39,7 +40,7 @@ const Slider = ({ isError, isLoading, data, configuration }) => {
                   <Row gutter={16}>
                     <Col span={8}>
                       <Card
-                        style={{ width: "360px" }}
+                        style={{ width: "342px", height: "33%" }}
                         hoverable
                         cover={
                           <img
