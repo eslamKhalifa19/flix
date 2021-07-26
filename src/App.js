@@ -3,6 +3,7 @@ import { Input, Typography, Layout } from "antd";
 import Slider from "./components/Carousal";
 import "./App.css";
 import { Content } from "antd/lib/layout/layout";
+
 import axios from "axios";
 
 const { Search } = Input;
@@ -117,7 +118,7 @@ function App() {
             configuration={configuration}
             isError={isError}
             isLoading={isLoading}
-            // searchData={searchData}
+            searchData={searchData}
           />
         </Content>
       </Layout>
