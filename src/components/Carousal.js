@@ -22,7 +22,7 @@ const Slider = ({ isError, isLoading, data, configuration, searchData }) => {
         infinite
         // lazyLoad
       >
-        <>
+        <div>
           {isError && <div>Something went wrong ...</div>}
           {isLoading && <Spinner />}
           {searchData &&
@@ -100,7 +100,7 @@ const Slider = ({ isError, isLoading, data, configuration, searchData }) => {
               </div>
             )
           )}
-        </>
+        </div>
       </Carousel>
     </div>
   );

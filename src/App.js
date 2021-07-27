@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { Input, Typography, Layout } from "antd";
 import Slider from "./components/Carousal";
 import "./App.css";
-import { Content } from "antd/lib/layout/layout";
-
+import debounce from "lodash.debounce";
 import axios from "axios";
+import { useDebouncedValue } from "./hooks/UseDebounceValue";
 
 const { Search } = Input;
 const { Title } = Typography;
 const { Header } = Layout;
+const { Content } = Layout;
 
 function App() {
   const [data, setData] = useState([]);
@@ -16,6 +17,7 @@ function App() {
   const [isError, setIsError] = useState(false);
   const [configuration, setConfiguration] = useState([]);
   const [query, setQuery] = useState("");
+  const debouncedQuery = useDebouncedValue(query, 500);
   const [searchData, setSearchData] = useState([]);
 
   useEffect(() => {
@@ -54,8 +56,8 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSearch = useEffect(() => {
-    if (!query) {
+  const onSearch = useCallback(() => {
+    if (!debouncedQuery) {
       return;
     }
     const searchData = async () => {
@@ -72,12 +74,26 @@ function App() {
       setIsLoading(false);
     };
     searchData();
-  }, [query]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedQuery]);
+
+  useEffect(() => {
+    onSearch();
+  }, [onSearch]);
+
+  const debouncedSearch = useMemo(() => debounce(onSearch, 500), [onSearch]);
+
   console.log(searchData);
 
   const onChange = (event) => {
     setQuery(event.target.value);
   };
+
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
 
   return (
     <>
@@ -108,7 +124,7 @@ function App() {
             allowClear
             enterButton="Search"
             size="large"
-            onSubmit={onSearch}
+            onSearch={debouncedSearch}
           />
         </Header>
         <Content>
