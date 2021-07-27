@@ -22,11 +22,48 @@ const Slider = ({ isError, isLoading, data, configuration, searchData }) => {
         infinite
         // lazyLoad
       >
-        <div>
-          {isError && <div>Something went wrong ...</div>}
-          {isLoading && <Spinner />}
-          {searchData &&
-            searchData.map(
+        {isError && <div>Something went wrong ...</div>}
+        {isLoading && <Spinner />}
+        {searchData.length > 0
+          ? searchData.map(
+              ({
+                id,
+                poster_path,
+                title,
+                overview,
+                vote_average,
+                release_date,
+              }) => (
+                <div className="site-card-wrapper" key={id}>
+                  <Space>
+                    <Row gutter={16}>
+                      <Col span={8}>
+                        <Card
+                          style={{ width: "342px", height: "33%" }}
+                          hoverable
+                          cover={
+                            <img
+                              alt="movie or series"
+                              src={configuration.concat("w342", poster_path)}
+                            />
+                          }
+                          extra={
+                            <Title level={5}>Rating: {vote_average}</Title>
+                          }
+                        >
+                          <Meta
+                            className="fit-text"
+                            title={title}
+                            description={overview}
+                          />
+                        </Card>
+                      </Col>
+                    </Row>
+                  </Space>
+                </div>
+              )
+            )
+          : data.map(
               ({
                 id,
                 poster_path,
@@ -64,43 +101,6 @@ const Slider = ({ isError, isLoading, data, configuration, searchData }) => {
                 </div>
               )
             )}
-          {data.map(
-            ({
-              id,
-              poster_path,
-              title,
-              overview,
-              vote_average,
-              release_date,
-            }) => (
-              <div className="site-card-wrapper" key={id}>
-                <Space>
-                  <Row gutter={16}>
-                    <Col span={8}>
-                      <Card
-                        style={{ width: "342px", height: "33%" }}
-                        hoverable
-                        cover={
-                          <img
-                            alt="movie or series"
-                            src={configuration.concat("w342", poster_path)}
-                          />
-                        }
-                        extra={<Title level={5}>Rating: {vote_average}</Title>}
-                      >
-                        <Meta
-                          className="fit-text"
-                          title={title}
-                          description={overview}
-                        />
-                      </Card>
-                    </Col>
-                  </Row>
-                </Space>
-              </div>
-            )
-          )}
-        </div>
       </Carousel>
     </div>
   );
