@@ -1,10 +1,9 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { Input, Typography, Layout } from "antd";
-import Slider from "./components/Carousal";
-import "./App.css";
 import debounce from "lodash.debounce";
 import axios from "axios";
-import { useDebouncedValue } from "./hooks/UseDebounceValue";
+import Slider from "./components/Carousal";
+import "./App.css";
 
 const { Search } = Input;
 const { Title } = Typography;
@@ -16,8 +15,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [configuration, setConfiguration] = useState([]);
-  const [query, setQuery] = useState("");
-  const debouncedQuery = useDebouncedValue(query, 500);
   const [searchData, setSearchData] = useState([]);
 
   useEffect(() => {
@@ -35,7 +32,6 @@ function App() {
       setIsLoading(false);
     };
     fetchConfiguration();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -53,40 +49,26 @@ function App() {
       setIsLoading(false);
     };
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSearch = useCallback(() => {
-    if (!debouncedQuery) {
-      return;
+  const onSearch = useCallback(async (value) => {
+    setIsError(false);
+    setIsLoading(true);
+    try {
+      const res = await axios(
+        `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&page=1&include_adult=false&query=${value}`
+      );
+      setSearchData(res.data.results);
+    } catch (error) {
+      setIsError(true);
     }
-    const searchData = async () => {
-      setIsError(false);
-      setIsLoading(true);
-      try {
-        const res = await axios(
-          `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&page=1&include_adult=false&query=${query}`
-        );
-        setSearchData(res.data.results);
-      } catch (error) {
-        setIsError(true);
-      }
-      setIsLoading(false);
-    };
-    searchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedQuery]);
-
-  useEffect(() => {
-    onSearch();
-  }, [onSearch]);
+    setIsLoading(false);
+  }, []);
 
   const debouncedSearch = useMemo(() => debounce(onSearch, 500), [onSearch]);
 
-  console.log(searchData);
-
   const onChange = (event) => {
-    setQuery(event.target.value);
+    onSearch(event.target.value);
   };
 
   useEffect(() => {
@@ -112,8 +94,7 @@ function App() {
             FLIX
           </Title>
           <Search
-            onChange={onChange}
-            value={query}
+            onChange={debounce(onChange, 500)}
             type="text"
             style={{
               float: "right",
@@ -124,7 +105,7 @@ function App() {
             allowClear
             enterButton="Search"
             size="large"
-            onSearch={debouncedSearch}
+            onSearch={onSearch}
           />
         </Header>
         <Content>
