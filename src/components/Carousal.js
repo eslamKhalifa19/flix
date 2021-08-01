@@ -4,7 +4,8 @@ const { Title } = Typography;
 
 const { Meta } = Card;
 
-const Slider = ({ isError, isLoading, data, configuration, searchData }) => {
+const Slider = ({ isError, isLoading, data, searchData }) => {
+  const base_url = "https://image.tmdb.org/t/p/";
   return (
     <div>
       <Carousel
@@ -20,7 +21,6 @@ const Slider = ({ isError, isLoading, data, configuration, searchData }) => {
         centerMode={true}
         adaptiveHeight
         infinite
-        // lazyLoad
       >
         {isError && <div>Something went wrong ...</div>}
         {isLoading && <Spinner />}
@@ -44,7 +44,7 @@ const Slider = ({ isError, isLoading, data, configuration, searchData }) => {
                           cover={
                             <img
                               alt="movie or series"
-                              src={configuration.concat("w342", poster_path)}
+                              src={base_url.concat("w342", poster_path)}
                             />
                           }
                           extra={
@@ -82,7 +82,7 @@ const Slider = ({ isError, isLoading, data, configuration, searchData }) => {
                           cover={
                             <img
                               alt="movie or series"
-                              src={configuration.concat("w342", poster_path)}
+                              src={base_url.concat("w342", poster_path)}
                             />
                           }
                           extra={
